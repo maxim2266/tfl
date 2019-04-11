@@ -6,8 +6,6 @@ shopt -s inherit_errexit
 # URL
 readonly URL=https://tfl.gov.uk/tube-dlr-overground/status/
 
-echo -e "Source: $URL\n"
-
 # temporary file
 SRC="$(mktemp)"
 
@@ -44,4 +42,7 @@ paste	\
 	<(take 'span[class="disruption-summary "]' | skip_empty_lines | hxunent)	\
 | column -t -s $'\t'	\
 | sort
+
+# source
+echo -e "\nSource: $URL"
 
