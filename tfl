@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e -o pipefail
+shopt -s inherit_errexit
+
+# URL
+readonly URL=https://tfl.gov.uk/tube-dlr-overground/status/
+
+echo -e "Source: $URL\n"
+
+# temporary file
+SRC="$(mktemp)"
+
+trap "rm -f $SRC" EXIT SIGABRT SIGTERM SIGINT SIGQUIT SIGHUP
+
+# download and preprocess the web page (tools: sudo apt-get install html-xml-utils)
+hxnormalize -s -x -e -l 1000000 "$URL"	\
+| hxselect '#service-status-page-board ul li[data-line-id]'	\
+| hxremove .close-message, .controls \
+| sed -E	\
+	-e 's/^[[:space:]]*(.+)[[:space:]]*$/\1/' \
+	-e 's/[[:space:]]+</</g'	\
+	-e 's/>[[:space:]]+/>/g'	\
+	-e '/^[^<>]+<br[[:space:]]*\/>$/d'	\
+| hxremove br	\
+> "$SRC"
+
+# helper functions
+take() {
+	set -o pipefail   # ???
+	hxselect -c -s '\n' "$@" < "$SRC"
+}
+
+skip_empty_lines() {
+	sed -E '/^[[:space:]]*$/d'
+}
+
+# (unused) disruption details
+#take 'div > div.section > p:first-child' | trim_space | hxunent
+
+# create and format output
+paste	\
+	<(take 'span[class^="service-name "]' | hxunent)	\
+	<(take 'span[class="disruption-summary "]' | skip_empty_lines | hxunent)	\
+| column -t -s $'\t'	\
+| sort
+
