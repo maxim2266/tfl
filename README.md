@@ -1,11 +1,11 @@
-# tfl: London Transport status in terminal.
+# tfl: London Transport status in your terminal.
 
 [![License: BSD 3 Clause](https://img.shields.io/badge/License-BSD_3--Clause-yellow.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-A little script to show the current status of London tranport, as reported by [TFL](https://tfl.gov.uk/).
+A little `bash` script to show the current status of London transport, as reported by [TFL](https://tfl.gov.uk/).
 Useful for those who live in London, UK.
 
-#### Example output:
+#### Example output (a typical weekend):
 ```bash
 $ tfl
 Bakerloo            Good service
@@ -38,4 +38,4 @@ sudo apt install html-xml-utils
 ### Status
 The script has been tested on Linux Mint 19.1, and it will probably work on other
 Ubuntu-based distributions as well.
-
+Since the script is based on some naïve web-scraping it may break at any time.
