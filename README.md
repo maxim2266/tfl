@@ -3,9 +3,10 @@
 [![License: BSD 3 Clause](https://img.shields.io/badge/License-BSD_3--Clause-yellow.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 A little `bash` script to show the current status of London transport, as reported by [TFL](https://tfl.gov.uk/).
-Useful for those who live in London, UK.
+Useful for those who live in London, UK, because the dynamic nature of London transport is probably worth
+a dedicated Linux command.
 
-#### Example output (a typical weekend):
+#### Example output (at a typical weekend):
 ```bash
 $ tfl
 Bakerloo            Good service

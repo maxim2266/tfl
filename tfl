@@ -7,7 +7,7 @@ shopt -s inherit_errexit
 readonly URL=https://tfl.gov.uk/tube-dlr-overground/status/
 
 # temporary file
-SRC="$(mktemp)"
+readonly SRC="$(mktemp)"
 
 trap "rm -f $SRC" EXIT SIGABRT SIGTERM SIGINT SIGQUIT SIGHUP
 
@@ -40,8 +40,8 @@ skip_empty_lines() {
 paste	\
 	<(take 'span[class^="service-name "]' | hxunent)	\
 	<(take 'span[class="disruption-summary "]' | skip_empty_lines | hxunent)	\
-| column -t -s $'\t'	\
-| sort
+| sort -k 1,1 -t $'\t'	\
+| column -t -s $'\t'
 
 # source
 echo -e "\nSource: $URL"
