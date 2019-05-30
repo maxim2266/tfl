@@ -12,7 +12,9 @@ readonly SRC="$(mktemp)"
 trap "rm -f $SRC" EXIT SIGABRT SIGTERM SIGINT SIGQUIT SIGHUP
 
 # download and preprocess the web page (tools: sudo apt-get install html-xml-utils)
-hxnormalize -s -x -e -l 1000000 "$URL"	\
+curl -fLsS "$URL"	\
+| grep -vE "'\s+'"	\
+| hxnormalize -s -x -e -l 1000000 \
 | hxselect '#service-status-page-board ul li[data-line-id]'	\
 | hxremove .close-message, .controls \
 | sed -E	\
